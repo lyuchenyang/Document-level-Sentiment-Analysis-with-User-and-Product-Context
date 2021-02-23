@@ -10,7 +10,7 @@ pip install -r requirements.txt
 ```
 
 ## 2. Download datasets
-Then ownload datasets from the url below:
+Then download datasets from the url below:
 
 ```angular2
 http://ir.hit.edu.cn/ ̃dytang/paper/acl2015/dataset.7z
