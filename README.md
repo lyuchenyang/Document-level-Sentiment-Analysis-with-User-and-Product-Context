@@ -10,13 +10,10 @@ pip install -r requirements.txt
 ```
 
 ## 2. Download datasets
-Then download datasets from the url below:
-
-```angular2
-http://ir.hit.edu.cn/ ̃dytang/paper/acl2015/dataset.7z
+Then download datasets from this url: [dataset](https://drive.google.com/file/d/1Bdt_jw-kiZCt7vJyfXe1hYmPKMinbtFu/view?usp=sharing).
 ```
 
-First unzip the downloaded zip file and move all dataset files to "data/document-level-sa/".
+Then unzip the downloaded zip file and move all dataset files to "data/document-level-sa/".
 
 ## 3. Training
 
