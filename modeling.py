@@ -84,7 +84,7 @@ class IncrementalContextBert(BertPreTrainedModel):
         if up_indices is not None and up_embeddings is not None:
             p_up_embeddings = self.embedding(up_indices)
             update_embeddings = p_up_embeddings + self.sigmoid(self.alpha)*up_embeddings
-            with torch.no_grad:
+            with torch.no_grad():
                 self.embedding.weight.index_copy(0, up_indices, update_embeddings)
 
         outputs = self.bert(**inputs)
@@ -102,8 +102,8 @@ class IncrementalContextBert(BertPreTrainedModel):
         z_cls = self.sigmoid(self.linear_t(cls_hidden_states))
         z_att_u, z_att_p = self.sigmoid(self.linear_u(att_u)), self.sigmoid(self.linear_p(att_p))
 
-        z_u = self.sigmod(z_cls + z_att_u)
-        z_p = self.sigmod(z_cls + z_att_p)
+        z_u = self.sigmoid(z_cls + z_att_u)
+        z_p = self.sigmoid(z_cls + z_att_p)
 
         cls_input = cls_hidden_states + z_u * att_u + z_p * att_p
 
@@ -170,7 +170,7 @@ class IncrementalContextRoberta(BertPreTrainedModel):
         if up_indices is not None and up_embeddings is not None:
             p_up_embeddings = self.embedding(up_indices)
             update_embeddings = p_up_embeddings + self.sigmoid(self.alpha) * up_embeddings
-            with torch.no_grad:
+            with torch.no_grad():
                 self.embedding.weight.index_copy(0, up_indices, update_embeddings)
 
         outputs = self.roberta(**inputs)
@@ -188,8 +188,8 @@ class IncrementalContextRoberta(BertPreTrainedModel):
         z_cls = self.sigmoid(self.linear_t(cls_hidden_states))
         z_att_u, z_att_p = self.sigmoid(self.linear_u(att_u)), self.sigmoid(self.linear_p(att_p))
 
-        z_u = self.sigmod(z_cls + z_att_u)
-        z_p = self.sigmod(z_cls + z_att_p)
+        z_u = self.sigmoid(z_cls + z_att_u)
+        z_p = self.sigmoid(z_cls + z_att_p)
 
         cls_input = cls_hidden_states + z_u * att_u + z_p * att_p
 
