@@ -108,7 +108,7 @@ def load_data(args, data_dirs, tokenizer):
         dataset = TensorDataset(all_input_ids, all_attention_mask, all_token_type_ids, all_labels, all_user_ids, all_product_ids)
 
         datasets.append(dataset)
-
+    datasets.append(up_vocab)
     return datasets
 
 
