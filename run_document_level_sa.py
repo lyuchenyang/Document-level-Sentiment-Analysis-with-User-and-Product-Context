@@ -37,8 +37,8 @@ from transformers import (
     get_linear_schedule_with_warmup,
 )
 
-from modeling import SecondPretrainingBert, IncrementalContextBert, FocalLoss, IncrementalContextRoberta
-from utils import eval_to_file, load_data, get_label_distributions
+from modeling import  IncrementalContextBert, FocalLoss, IncrementalContextRoberta
+from utils import eval_to_file, load_data
 from pargs import Arguments
 
 try:
@@ -154,7 +154,7 @@ def train(args, train_dataset, model, tokenizer, freeze=True, dev_set=None, eval
 
     tr_loss, logging_loss = 0.0, 0.0
     model.zero_grad()
-    train_iterator = trange(int(args.num_train_epochs), desc="Epoch", disable=args.local_rank not in [-1, 0])
+    train_iterator = trange(int(args.num_train_epochs), desc="Epoch")
     set_seed(args)  # Added here for reproductibility (even between python 2 and 3)
     up_indices, new_embeddings = None, None
 
@@ -163,7 +163,7 @@ def train(args, train_dataset, model, tokenizer, freeze=True, dev_set=None, eval
         loss_fct = FocalLoss(gamma=3, alpha=args.alpha)
 
     for _ in train_iterator:
-        epoch_iterator = tqdm(train_dataloader, desc="Iteration", disable=args.local_rank not in [-1, 0])
+        epoch_iterator = tqdm(train_dataloader, desc="Iteration")
         for step, batch in enumerate(epoch_iterator):
 
             # Skip past any already trained steps
@@ -360,9 +360,9 @@ def main():
     args.num_train_epochs = arguments.epochs
     args.is_incremental = arguments.incremental
     args.is_second_training = arguments.second_train
-    args.do_train = arguments.do_trian
+    args.do_train = arguments.do_train
     args.do_eval = arguments.do_eval
-    args.weiget_decay = arguments.weight_decay
+    args.weight_decay = arguments.weight_decay
     args.learning_rate = arguments.learning_rate
     args.warmup_steps = arguments.warmup_steps
     args.max_seq_length = arguments.max_seq_length
@@ -407,7 +407,7 @@ def main():
     args.output_dir = output_dir
     args.eval_out_file = eval_dir
 
-    config_class, model_class, tokenizer_class = MODEL_CLASSES[args.model_type]
+    config_class, tokenizer_class, model_class = MODEL_CLASSES[args.model_type]
 
     tokenizer = tokenizer_class.from_pretrained(
         args.model_name_or_path,
@@ -416,16 +416,13 @@ def main():
 
     num_labels = len(args.label_list)
 
-    data_dirs = ["data/document-level-sa-dataset/" + args.task_name + "seg-20-20.train.ss",
-                 "data/document-level-sa-dataset/" + args.task_name + "seg-20-20.dev.ss",
-                 "data/document-level-sa-dataset/" + args.task_name + "seg-20-20.test.ss",
+    data_dirs = ["data/document-level-sa-dataset/" + args.task_name + "-seg-20-20.train.ss",
+                 "data/document-level-sa-dataset/" + args.task_name + "-seg-20-20.dev.ss",
+                 "data/document-level-sa-dataset/" + args.task_name + "-seg-20-20.test.ss",
                  ]
     train_dataset, dev_dataset, test_dataset, up_vocab = load_data(args, data_dirs, tokenizer)
 
     # long_dev_dataset, long_test_dataset = load_dev_and_eval_data(args, data_dirs[1:], tokenizer, up_vocab)
-
-    if args.is_focal_loss:
-        args.alpha = get_label_distributions(data_dirs[0])
 
     set_seed(args)
     args.model_type = args.model_type.lower()
@@ -455,7 +452,7 @@ def main():
 
     # Training
     if args.do_train:
-        global_step, tr_loss = train(args, train_dataset, model, tokenizer, freeze=False, dev_dataset=dev_dataset, test_dataset=test_dataset)
+        global_step, tr_loss = train(args, train_dataset, model, tokenizer, freeze=False, dev_set=dev_dataset, eval_set=test_dataset)
         logger.info(" global_step = %s, average loss = %s", global_step, tr_loss)
 
     if args.is_second_training:
@@ -509,7 +506,7 @@ def main():
 
     # Evaluation
     results = {}
-    if args.do_eval and args.local_rank in [-1, 0]:
+    if args.do_eval:
         tokenizer = tokenizer_class.from_pretrained(args.output_dir, do_lower_case=args.do_lower_case)
         checkpoints = [args.output_dir]
         if args.eval_all_checkpoints:
