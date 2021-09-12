@@ -37,7 +37,7 @@ from transformers import (
     get_linear_schedule_with_warmup,
 )
 
-from modeling import  IncrementalContextBert, FocalLoss, IncrementalContextRoberta
+from modeling import SecondPretrainedBert, IncrementalContextBert, FocalLoss, IncrementalContextRoberta
 from utils import eval_to_file, load_data
 from pargs import Arguments
 
