@@ -49,6 +49,23 @@ python run_document_level_sa.py --task_name yelp-2013 \
     --max_seq_length 512 \                            
 ```
 
+## Citation
+
+```
+@inproceedings{lyu-etal-2020-improving,
+    title = "Improving Document-Level Sentiment Analysis with User and Product Context",
+    author = "Lyu, Chenyang and Foster, Jennifer and Graham, Yvette",
+    booktitle = "Proceedings of the 28th International Conference on Computational Linguistics",
+    month = dec,
+    year = "2020",
+    address = "Barcelona, Spain (Online)",
+    publisher = "International Committee on Computational Linguistics",
+    url = "https://aclanthology.org/2020.coling-main.590",
+    doi = "10.18653/v1/2020.coling-main.590",
+    pages = "6724--6729"
+}
+```
+
 ## License
 
 This work is licensed under a [Creative Commons Attribution 4.0 International Licence](http://creativecommons.org/licenses/by/4.0/).
