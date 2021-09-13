@@ -403,7 +403,7 @@ def main():
         "_seed_" + str(args.seed) + "/"
     eval_dir = "eval_results/" + args.model_name_or_path + "_" + args.task_name + '_' + model_type + "_epochs_" + str(args.num_train_epochs) + "_lr_" + \
         str(args.learning_rate) + "_weight-decay_" + str(args.weight_decay) + "_warmup_" + str(args.warmup_steps) + "_mql_" + str(args.max_seq_length) + '_shrink_' + str(arguments.inner_size) + \
-        "_seed_" + str(args.seed) + "/"
+        "_seed_" + str(args.seed) + ".log"
 
     args.output_dir = output_dir
     args.eval_out_file = eval_dir
