@@ -266,6 +266,7 @@ def evaluate(args, model, eval_dataset, tokenizer, prefix=""):
         nb_eval_steps = 0
         preds = None
         out_label_ids = None
+        up_indices, new_embeddings = None, None
         for batch in tqdm(eval_dataloader, desc="Evaluating"):
             model.eval()
             batch = tuple(t.to(args.device) for t in batch)
@@ -280,7 +281,7 @@ def evaluate(args, model, eval_dataset, tokenizer, prefix=""):
                                                                                'xlnet'] else None  # XLM, DistilBERT and RoBERTa don't use segment_ids
 
                 if args.is_incremental:
-                    logits, up_indices, new_embeddings = model(inputs, user_product, up_indices, new_embeddings)
+                    logits, _* = model(inputs, user_product)
                 else:
                     inputs['labels'] = batch[3]
                     outputs = model(**inputs)
