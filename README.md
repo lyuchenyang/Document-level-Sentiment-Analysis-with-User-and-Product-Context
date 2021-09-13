@@ -51,7 +51,7 @@ python run_document_level_sa.py --task_name yelp-2013 \
 
 ## Citation
 
-```
+```bibtex
 @inproceedings{lyu-etal-2020-improving,
     title = "Improving Document-Level Sentiment Analysis with User and Product Context",
     author = "Lyu, Chenyang and Foster, Jennifer and Graham, Yvette",
