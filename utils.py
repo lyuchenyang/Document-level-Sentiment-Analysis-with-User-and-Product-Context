@@ -34,9 +34,9 @@ class Lang:
 
 def eval_to_file(out_file_name, preds, true_labels):
     accuracy = metric.accuracy_score(true_labels, preds)
-    precision = metric.precision_score(true_labels, preds)
-    recall = metric.recall_score(true_labels, preds)
-    f1 = metric.f1_score(true_labels, preds)
+    precision = metric.precision_score(true_labels, preds, average='macro')
+    recall = metric.recall_score(true_labels, preds, average='macro')
+    f1 = metric.f1_score(true_labels, preds, average='macro')
     MSE = metric.mean_squared_error(true_labels, preds)
     RMSE = metric.mean_squared_error(true_labels, preds, squared=False)
 
