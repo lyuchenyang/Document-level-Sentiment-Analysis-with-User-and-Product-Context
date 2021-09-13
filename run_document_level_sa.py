@@ -281,7 +281,7 @@ def evaluate(args, model, eval_dataset, tokenizer, prefix=""):
                                                                                'xlnet'] else None  # XLM, DistilBERT and RoBERTa don't use segment_ids
 
                 if args.is_incremental:
-                    logits, _* = model(inputs, user_product)
+                    logits, up_indices, new_embeddings = model(inputs, user_product)
                 else:
                     inputs['labels'] = batch[3]
                     outputs = model(**inputs)
