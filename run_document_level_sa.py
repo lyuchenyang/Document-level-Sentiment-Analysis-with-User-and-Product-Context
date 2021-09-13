@@ -289,10 +289,10 @@ def evaluate(args, model, eval_dataset, tokenizer, prefix=""):
             nb_eval_steps += 1
             if preds is None:
                 preds = logits.detach().cpu().numpy()
-                out_label_ids = inputs['labels'].detach().cpu().numpy()
+                out_label_ids = batch[3].detach().cpu().numpy()
             else:
                 preds = np.append(preds, logits.detach().cpu().numpy(), axis=0)
-                out_label_ids = np.append(out_label_ids, inputs['labels'].detach().cpu().numpy(), axis=0)
+                out_label_ids = np.append(out_label_ids, batch[3].detach().cpu().numpy(), axis=0)
 
         if args.output_mode == "classification":
             preds = np.argmax(preds, axis=1)
@@ -303,9 +303,9 @@ def evaluate(args, model, eval_dataset, tokenizer, prefix=""):
 
         eval_to_file(args.eval_out_file, preds, out_label_ids)
         print("accuracy: ", metric.accuracy_score(out_label_ids, preds))
-        print("precision: ", metric.precision_score(out_label_ids, preds))
-        print("recall: ", metric.recall_score(out_label_ids, preds))
-        print("F1: ", metric.f1_score(out_label_ids, preds))
+        print("precision: ", metric.precision_score(out_label_ids, preds, average='macro'))
+        print("recall: ", metric.recall_score(out_label_ids, preds, average='macro'))
+        print("F1: ", metric.f1_score(out_label_ids, preds, average='macro'))
         print("Mean Squared Error: ", metric.mean_squared_error(out_label_ids, preds))
         print("Root Mean Squared Error: ", metric.mean_squared_error(out_label_ids, preds, squared=False))
 
