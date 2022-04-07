@@ -4,7 +4,6 @@ import torch
 from transformers import InputExample
 from tqdm import tqdm
 from torch.utils.data import TensorDataset
-from transformers import glue_convert_examples_to_features as convert_examples_to_features
 import numpy as np
 import os
 import pickle
